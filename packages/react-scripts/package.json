@@ -1,10 +1,10 @@
 {
-  "name": "react-scripts",
-  "version": "3.0.0",
+  "name": "react-scripts-lelouch",
+  "version": "3.0.0-lelouch.0",
   "description": "Configuration and scripts for Create React App.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/facebook/create-react-app.git",
+    "url": "https://github.com/lujb/create-react-app.git",
     "directory": "packages/react-scripts"
   },
   "license": "MIT",
@@ -12,7 +12,7 @@
     "node": ">=8.10"
   },
   "bugs": {
-    "url": "https://github.com/facebook/create-react-app/issues"
+    "url": "https://github.com/lujb/create-react-app/issues"
   },
   "files": [
     "bin",
@@ -36,7 +36,7 @@
     "babel-jest": "24.7.1",
     "babel-loader": "8.0.5",
     "babel-plugin-named-asset-import": "^0.3.2",
-    "babel-preset-react-app": "^8.0.0",
+    "babel-preset-react-app-lelouch": "^8.0.0-lelouch.0",
     "case-sensitive-paths-webpack-plugin": "2.2.0",
     "css-loader": "2.1.1",
     "dotenv": "6.2.0",

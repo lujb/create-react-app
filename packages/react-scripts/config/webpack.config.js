@@ -52,6 +52,8 @@ const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
+const lessRegex = /\.less$/;
+const lessModuleRegex = /\.module\.less$/
 
 // This is the production and development configuration.
 // It is focused on developer experience, fast rebuilds, and a minimal bundle.
@@ -120,10 +122,15 @@ module.exports = function(webpackEnv) {
       },
     ].filter(Boolean);
     if (preProcessor) {
+      if (typeof preProcessor === 'string') {
+        preProcessor = { loader: preProcessor }
+      }
+      preProcessor.options = preProcessor.options || {}
       loaders.push({
-        loader: require.resolve(preProcessor),
+        loader: require.resolve(preProcessor.loader),
         options: {
           sourceMap: isEnvProduction && shouldUseSourceMap,
+          ...preProcessor.options
         },
       });
     }
@@ -361,7 +368,7 @@ module.exports = function(webpackEnv) {
                 // @remove-on-eject-begin
                 babelrc: false,
                 configFile: false,
-                presets: [require.resolve('babel-preset-react-app')],
+                presets: [require.resolve('babel-preset-react-app-lelouch')],
                 // Make sure we have a unique cache identifier, erring on the
                 // side of caution.
                 // We remove this when the user ejects because the default
@@ -373,9 +380,9 @@ module.exports = function(webpackEnv) {
                     : isEnvDevelopment && 'development',
                   [
                     'babel-plugin-named-asset-import',
-                    'babel-preset-react-app',
+                    'babel-preset-react-app-lelouch',
                     'react-dev-utils',
-                    'react-scripts',
+                    'react-scripts-lelouch',
                   ]
                 ),
                 // @remove-on-eject-end
@@ -424,7 +431,7 @@ module.exports = function(webpackEnv) {
                     : isEnvDevelopment && 'development',
                   [
                     'babel-plugin-named-asset-import',
-                    'babel-preset-react-app',
+                    'babel-preset-react-app-lelouch',
                     'react-dev-utils',
                     'react-scripts',
                   ]
@@ -499,6 +506,49 @@ module.exports = function(webpackEnv) {
                   getLocalIdent: getCSSModuleLocalIdent,
                 },
                 'sass-loader'
+              ),
+            },
+            // Opt-in support for LESS (using .less extensions).
+            // By default we support LESS Modules with the
+            // extensions .module.less
+            {
+              test: lessRegex,
+              exclude: lessModuleRegex,
+              use: getStyleLoaders(
+                {
+                  importLoaders: 2,
+                  sourceMap: isEnvProduction && shouldUseSourceMap,
+                },
+                {
+                  loader: 'less-loader',
+                  options: {
+                    javascriptEnabled: true
+                  }
+                }
+              ),
+              // Don't consider CSS imports dead code even if the
+              // containing package claims to have no side effects.
+              // Remove this when webpack adds a warning or an error for this.
+              // See https://github.com/webpack/webpack/issues/6571
+              sideEffects: true,
+            },
+            // Adds support for CSS Modules, but using LESS
+            // using the extension .module.less
+            {
+              test: lessModuleRegex,
+              use: getStyleLoaders(
+                {
+                  importLoaders: 2,
+                  sourceMap: isEnvProduction && shouldUseSourceMap,
+                  modules: true,
+                  getLocalIdent: getCSSModuleLocalIdent,
+                },
+                {
+                  loader: 'less-loader',
+                  options: {
+                    javascriptEnabled: true
+                  }
+                }
               ),
             },
             // "file" loader makes sure those assets get served by WebpackDevServer.
