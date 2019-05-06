@@ -363,7 +363,7 @@ module.exports = function(webpackEnv) {
               loader: require.resolve('babel-loader'),
               options: {
                 customize: require.resolve(
-                  'babel-preset-react-app/webpack-overrides'
+                  'babel-preset-react-app-lelouch/webpack-overrides'
                 ),
                 // @remove-on-eject-begin
                 babelrc: false,
@@ -418,7 +418,7 @@ module.exports = function(webpackEnv) {
                 compact: false,
                 presets: [
                   [
-                    require.resolve('babel-preset-react-app/dependencies'),
+                    require.resolve('babel-preset-react-app-lelouch/dependencies'),
                     { helpers: true },
                   ],
                 ],
